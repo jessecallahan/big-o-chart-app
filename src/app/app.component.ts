@@ -14,10 +14,11 @@ export class AppComponent implements OnInit {
   public processes: any[] = [];
 
   // time complexity data
-  public linearTime: number[] = [];
   public logarithmicTime: number[] = [];
-  public quadraticOperations = [];
-  public logLinearOperations  = [];
+  public linearTime: number[] = [];
+  public logLinearTime: number[]  = [];
+  public quadraticTime: number[] = [];
+
 
   constructor() { }
 
@@ -34,25 +35,25 @@ export class AppComponent implements OnInit {
         labels: this.elements,
         datasets: [
           {
+            label: "Logarithmic Time",
+            data: this.logarithmicTime,
+            backgroundColor: 'limegreen'
+          },
+          {
             label: "Linear Time",
             data: this.linearTime,
             backgroundColor: 'green'
           },
           {
-            label: "Logarithmic Time",
-            data: this.logarithmicTime,
-            backgroundColor: 'limegreen'
+            label: "Log Linear Time",
+            data: this.logLinearTime,
+            backgroundColor: 'orange'
           },
-          // {
-          //   label: "Log Linear Time",
-          //   data: [2],
-          //   backgroundColor: 'orange'
-          // },
-          // {
-          //   label: "Quadratic Time",
-          //   data: [3],
-          //   backgroundColor: 'red'
-          // }
+          {
+            label: "Quadratic Time",
+            data: this.quadraticTime,
+            backgroundColor: 'red'
+          }
         ]
       },
       options: {
@@ -61,7 +62,7 @@ export class AppComponent implements OnInit {
           y: {
             title: {
               display: true,
-              text: 'Time'
+              text: 'Time (ms)'
             }
           },
           x: {
@@ -94,12 +95,17 @@ export class AppComponent implements OnInit {
     this.runAlgo(input)
       // update chart
       .then((data) => {
-        const linear = data[0];
-        const logarithmic = data[1];
+        const logarithmic = data[0];
+        const linear = data[1];
+        const logLinear = data[2];
+        const quadratic = data[3];
+
         console.log('promise completed', data)
-        this.linearTime.push(linear.time);
         this.logarithmicTime.push(logarithmic.time);
-        this.processes.push([linear, logarithmic]);
+        this.linearTime.push(linear.time);
+        this.logLinearTime.push(logLinear.time);
+        this.quadraticTime.push(quadratic.time);
+        this.processes.push([logarithmic, linear, logLinear, quadratic]);
         this.chart.update()
       });
 
