@@ -11,11 +11,12 @@ export class AppComponent implements OnInit {
   public chart: any;
   public input: any;
   public elements: number[] = [];
+  public processes: any[] = [];
 
   // time complexity data
   public linearTime: number[] = [];
+  public logarithmicTime: number[] = [];
   public quadraticOperations = [];
-  public logarithmicOperations = [];
   public logLinearOperations  = [];
 
   constructor() { }
@@ -35,23 +36,23 @@ export class AppComponent implements OnInit {
           {
             label: "Linear Time",
             data: this.linearTime,
-            backgroundColor: 'limegreen'
+            backgroundColor: 'green'
           },
           {
             label: "Logarithmic Time",
-            data: [1],
+            data: this.logarithmicTime,
             backgroundColor: 'limegreen'
           },
-          {
-            label: "Log Linear Time",
-            data: [2],
-            backgroundColor: 'orange'
-          },
-          {
-            label: "Quadratic Time",
-            data: [3],
-            backgroundColor: 'red'
-          }
+          // {
+          //   label: "Log Linear Time",
+          //   data: [2],
+          //   backgroundColor: 'orange'
+          // },
+          // {
+          //   label: "Quadratic Time",
+          //   data: [3],
+          //   backgroundColor: 'red'
+          // }
         ]
       },
       options: {
@@ -76,34 +77,53 @@ export class AppComponent implements OnInit {
   }
 
   // Process Input
-  processInput(input: number) {
+  process(input: number) {
     // add to inputList (todo turn into pure function)
     this.elements.push(input);
 
     // sort elements
-    this.elements.sort((a,b) => a - b);
+    //this.elements.sort((a,b) => a - b);
 
     // clear input
     this.input = '';
 
     // console input list
-    console.log(this.elements);
+    console.log(this.processes);
 
     // process algos
-    var t0 = performance.now();
-    this.linear(input);
-    var t1 = performance.now();
-    this.linearTime.push(t1 - t0);
+    this.runAlgo(input)
+      // update chart
+      .then((data) => {
+        const linear = data[0];
+        const logarithmic = data[1];
+        console.log('promise completed', data)
+        this.linearTime.push(linear.time);
+        this.logarithmicTime.push(logarithmic.time);
+        this.processes.push([linear, logarithmic]);
+        this.chart.update()
+      });
 
-    // update chart
-    this.chart.update();
+
+
   }
 
-  // Algorithms
-  // Linear Time
-  linear = (n: number) => {
-    for(let i = 0; i <= n; i++) {
-      console.log(n);
-    }
+  // Utilities
+  // millisToMinutesAndSeconds(millis: number) {
+  //   const date = new Date(millis);
+  //   return `${date.getMinutes()}:${date.getSeconds()}`
+  // }
+
+  runAlgo(input: number): Promise<any> {
+    return new Promise((resolve) => {
+      const worker = new Worker(new URL('./app.worker', import.meta.url));
+      worker.postMessage(input);
+      worker.onmessage = ({ data }) => {
+        resolve(data);
+      };
+    });
   }
+
+
 }
+
+

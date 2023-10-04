@@ -1,8 +1,28 @@
 <h1>Big O data</h1>
 
 <input type="number" [(ngModel)]="input">
-<button type="button" (click)="processInput(input)">Test Input</button>
+<button type="button" (click)="process(input)">Test Input</button>
 
 <div class="chart-container">
-  <canvas  id="MyChart" >{{ chart }}</canvas>
+  <canvas id="MyChart">{{ chart }}</canvas>
 </div>
+
+
+<table>
+  <tr *ngFor="let process of processes">
+    <td>
+      <p>Test {{processes.indexOf(process) + 1}}</p>
+      <p>Input Value: {{process[0].input}}</p>
+    </td>
+    <table>
+      <th>Type</th>
+      <th>Process Time</th>
+      <th>No. of Operations</th>
+      <tr class="checker" *ngFor="let proc of process">
+        <td>{{proc.type}}</td>
+        <td>{{proc.time}}</td>
+        <td>{{proc.operations}}</td>
+      </tr>
+    </table>
+  </tr>
+</table>
