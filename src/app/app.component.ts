@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   public elements: number[] = [];
 
   // time complexity data
-  public linearOperations = [];
+  public linearTime: number[] = [];
   public quadraticOperations = [];
   public logarithmicOperations = [];
   public logLinearOperations  = [];
@@ -34,26 +34,22 @@ export class AppComponent implements OnInit {
         datasets: [
           {
             label: "Linear Time",
-            data: ['467','576', '572', '79', '92',
-              '574', '573', '576'],
+            data: this.linearTime,
             backgroundColor: 'limegreen'
           },
           {
             label: "Logarithmic Time",
-            data: ['542', '542', '536', '327', '17',
-              '0.00', '538', '541'],
+            data: [1],
             backgroundColor: 'limegreen'
           },
           {
             label: "Log Linear Time",
-            data: ['542', '542', '536', '327', '17',
-              '0.00', '538', '541'],
+            data: [2],
             backgroundColor: 'orange'
           },
           {
             label: "Quadratic Time",
-            data: ['542', '542', '536', '327', '17',
-              '0.00', '538', '541'],
+            data: [3],
             backgroundColor: 'red'
           }
         ]
@@ -64,7 +60,7 @@ export class AppComponent implements OnInit {
           y: {
             title: {
               display: true,
-              text: 'Operations'
+              text: 'Time'
             }
           },
           x: {
@@ -93,10 +89,21 @@ export class AppComponent implements OnInit {
     // console input list
     console.log(this.elements);
 
+    // process algos
+    var t0 = performance.now();
+    this.linear(input);
+    var t1 = performance.now();
+    this.linearTime.push(t1 - t0);
+
     // update chart
     this.chart.update();
   }
 
   // Algorithms
-
+  // Linear Time
+  linear = (n: number) => {
+    for(let i = 0; i <= n; i++) {
+      console.log(n);
+    }
+  }
 }
