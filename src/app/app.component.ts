@@ -71,6 +71,20 @@ export class AppComponent implements OnInit {
               text: 'Elements'
             }
           }
+        },
+        plugins: {
+          zoom: {
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+
+              mode: 'xy',
+            },
+            pan: {
+              enabled: true
+            },
+          }
         }
       }
 
@@ -95,23 +109,33 @@ export class AppComponent implements OnInit {
     this.runAlgo(input)
       // update chart
       .then((data) => {
+
         const logarithmic = data[0];
         const linear = data[1];
         const logLinear = data[2];
         const quadratic = data[3];
 
-        console.log('promise completed', data)
+        console.log('promise complete for:', input, data)
         this.logarithmicTime.push(logarithmic.time);
         this.linearTime.push(linear.time);
         this.logLinearTime.push(logLinear.time);
         this.quadraticTime.push(quadratic.time);
         this.processes.push([logarithmic, linear, logLinear, quadratic]);
-        this.chart.update()
+        this.chart.update();
       });
-
-
-
   }
+
+  // autoProcess(input: number, stop = false) {
+  //   const interval = setInterval(() => {
+  //     this.process(input);
+  //     input = input * 2;
+  //     console.log('input', input);
+  //   }, 5000);
+  //
+  //   if (stop) {
+  //     clearInterval(interval)
+  //   }
+  // }
 
   // Utilities
   // millisToMinutesAndSeconds(millis: number) {
@@ -120,6 +144,7 @@ export class AppComponent implements OnInit {
   // }
 
   runAlgo(input: number): Promise<any> {
+    console.log('starting promise for input:', input)
     return new Promise((resolve) => {
       const worker = new Worker(new URL('./app.worker', import.meta.url));
       worker.postMessage(input);
