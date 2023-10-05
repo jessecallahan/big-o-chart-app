@@ -23,7 +23,7 @@ function prepareTestResults(type: string, operations: Function, input: number) {
 }
 
 // Algorithms
-// Logarithmic Time
+// Logarithmic Time - O(log n)
 const logo = function logarithmic(n: number, operations = 0) {
   while(n > 1) {
     n = Math.floor(n / 2);
@@ -32,7 +32,7 @@ const logo = function logarithmic(n: number, operations = 0) {
   return operations;
 }
 
-// Linear Time
+// Linear Time - O(n)
 const linear = function linear(n: number, operations = 0) {
   for(let i = 0; i < n; i++) {
     operations++;
@@ -40,7 +40,7 @@ const linear = function linear(n: number, operations = 0) {
   return operations;
 }
 
-// Log Linear Time
+// Log Linear Time - O(n log n)
 const logLinear = function logLinear(n: number, operations = 0) {
   let y = n;
   while(n > 1) {
@@ -53,7 +53,7 @@ const logLinear = function logLinear(n: number, operations = 0) {
 
 }
 
-// Quadratic Time
+// Quadratic Time - O(n^2)
 const quadratic = function quadratic(n: number, operations = 0) {
   for(let i= 0; i< n; i++) {
     for(let j = 0; j < n; j++) {
