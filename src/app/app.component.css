@@ -1,11 +1,15 @@
-
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.grid-item {
+  padding: 4px;
+}
 
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
-
-
 }
 
 td, th {

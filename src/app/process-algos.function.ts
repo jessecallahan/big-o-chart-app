@@ -1,16 +1,20 @@
-class TestResults {
+export class TestResults {
   constructor(public time: number,
               public type: string,
               public operations: number,
               public input: number) {}
 }
-export function processAlgos(input: number) {
-  return [
-    prepareTestResults('Logarithmic', logo, input),
-    prepareTestResults('Linear', linear, input),
-    prepareTestResults('Log Linear', logLinear, input),
-    prepareTestResults('Quadratic', quadratic, input)
-  ];
+export function processAlgos(input: any) {
+  let algo: any;
+  if (input.type === 'Logarithmic') {
+    algo = logo;
+  }
+
+  if (input.type === 'Linear') {
+    algo = linear;
+  }
+
+  return prepareTestResults(input.type, algo, input.input);
 }
 
 function prepareTestResults(type: string, operations: Function, input: number) {

@@ -2,27 +2,47 @@
 
 <input type="number" [(ngModel)]="input">
 <button type="button" (click)="process(input)">Test Input</button>
-<button type="button" (click)="chart.resetZoom()">Reset Zoom</button>
-<div class="chart-container">
-  <canvas id="MyChart">{{ chart }}</canvas>
-</div>
 
 
-<table>
-  <tr *ngFor="let process of processes">
-    <td>
-      <p>Test {{processes.indexOf(process) + 1}}</p>
-      <p><b>Input Value: {{process[0].input}}</b></p>
-    </td>
+<div class="grid-container">
+
+  <div class="grid-item">
+    <h2>Logarithmic chart</h2>
+    <button type="button" (click)="logChart.resetZoom()">Reset Zoom</button>
+    <div class="chart-container">
+      <canvas id="logChart">{{ logChart }}</canvas>
+    </div>
     <table>
-      <th>Type</th>
+      <th>Value</th>
       <th>Process Time</th>
       <th>No. of Operations</th>
-      <tr class="checker" *ngFor="let proc of process">
-        <td>{{proc.type}}</td>
-        <td>{{proc.time}}</td>
-        <td>{{proc.operations}}</td>
+      <tr class="checker" *ngFor="let result of logarithmicTestResults">
+        <td>{{result.input}}</td>
+        <td>{{result.time}}</td>
+        <td>{{result.operations}}</td>
       </tr>
     </table>
-  </tr>
-</table>
+  </div>
+
+  <div class="grid-item">
+    <h2>Linear chart</h2>
+    <button type="button" (click)="linChart.resetZoom()">Reset Zoom</button>
+    <div class="chart-container">
+      <canvas id="linChart">{{ linChart }}</canvas>
+    </div>
+    <table>
+      <th>Value</th>
+      <th>Process Time</th>
+      <th>No. of Operations</th>
+      <tr class="checker" *ngFor="let result of linearTestResults">
+        <td>{{result.input}}</td>
+        <td>{{result.time}}</td>
+        <td>{{result.operations}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+</div>
+

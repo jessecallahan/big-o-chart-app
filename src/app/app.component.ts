@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from "chart.js/auto";
+import {TestResults} from "./process-algos.function";
 
 
 @Component({
@@ -8,10 +9,11 @@ import {Chart} from "chart.js/auto";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public chart: any;
+  public logChart: any;
+  public linChart: any;
   public input: any;
   public elements: number[] = [];
-  public processes: any[] = [];
+
 
   // time complexity data
   public logarithmicTime: number[] = [];
@@ -19,16 +21,52 @@ export class AppComponent implements OnInit {
   public logLinearTime: number[]  = [];
   public quadraticTime: number[] = [];
 
+  // test results data
+  public logarithmicTestResults: TestResults[] = [];
+  public linearTestResults: TestResults[] = [];
+
+
+  chartOptions: any = {
+    responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: 'Time (ms)'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Elements'
+        }
+      }
+    },
+    plugins: {
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+
+          mode: 'xy',
+        },
+        pan: {
+          enabled: true
+        },
+      }
+    }
+  }
 
   constructor() { }
 
   ngOnInit(): void {
-    this.createChart();
+    this.createCharts();
   }
 
   // Chart config
-  createChart(){
-    this.chart = new Chart("MyChart", {
+  createCharts(){
+    this.logChart = new Chart("logChart", {
       type: 'line',
       data: {
         // values on X-Axis
@@ -38,56 +76,26 @@ export class AppComponent implements OnInit {
             label: "Logarithmic Time",
             data: this.logarithmicTime,
             backgroundColor: 'limegreen'
-          },
+          }
+        ]
+      },
+      options: this.chartOptions
+    });
+
+    this.linChart = new Chart("linChart", {
+      type: 'line',
+      data: {
+        // values on X-Axis
+        labels: this.elements,
+        datasets: [
           {
             label: "Linear Time",
             data: this.linearTime,
             backgroundColor: 'green'
-          },
-          {
-            label: "Log Linear Time",
-            data: this.logLinearTime,
-            backgroundColor: 'orange'
-          },
-          {
-            label: "Quadratic Time",
-            data: this.quadraticTime,
-            backgroundColor: 'red'
           }
         ]
       },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            title: {
-              display: true,
-              text: 'Time (ms)'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Elements'
-            }
-          }
-        },
-        plugins: {
-          zoom: {
-            zoom: {
-              wheel: {
-                enabled: true,
-              },
-
-              mode: 'xy',
-            },
-            pan: {
-              enabled: true
-            },
-          }
-        }
-      }
-
+      options: this.chartOptions
     });
   }
 
@@ -99,37 +107,35 @@ export class AppComponent implements OnInit {
     // clear input
     this.input = '';
 
-    // console input list
-    console.log(this.processes);
-
     // process algos
-    this.runAlgo(input);
+    this.runAlgos(input);
   }
 
-  runAlgo(input: number): void {
+  runAlgos(input: number): void {
     console.log('start web worker for:', input);
-    const worker = new Worker(new URL('./app.worker', import.meta.url));
-    worker.postMessage(input);
-    worker.onmessage = ({ data }) => {
+    // run four web workers
+    // run Logarithmic
+    const logWorker = new Worker(new URL('./app.worker', import.meta.url));
+    logWorker.postMessage({input: input, type: 'Logarithmic'});
+    logWorker.onmessage = ({ data }) => {
       // update chart
-      this.resolveWorker(data, input);
+      this.resolveWorker(data, 'Logarithmic', this.logChart, this.logarithmicTime, this.logarithmicTestResults, input);
+    };
+
+    // run Linear
+    const linWorker = new Worker(new URL('./app.worker', import.meta.url));
+    linWorker.postMessage({input: input, type: 'Linear'});
+    linWorker.onmessage = ({ data }) => {
+      // update chart
+      this.resolveWorker(data, 'Linear', this.linChart, this.linearTime, this.linearTestResults, input);
     };
   }
 
-  resolveWorker(data: any, input: number) {
-    const logarithmic = data[0];
-    const linear = data[1];
-    const logLinear = data[2];
-    const quadratic = data[3];
-
-    console.log('worker complete for:', input, data)
-    this.logarithmicTime.push(logarithmic.time);
-    this.linearTime.push(linear.time);
-    this.logLinearTime.push(logLinear.time);
-    this.quadraticTime.push(quadratic.time);
-    this.processes.push([logarithmic, linear, logLinear, quadratic]);
-
-    this.chart.update();
+  resolveWorker(data: any, type: string, chart: any, timeList: number[], testResultsList: TestResults[], input: number) {
+    console.log('worker complete for:', type, input, data)
+    timeList.push(data.time);
+    testResultsList.push(data);
+    chart.update();
   }
 
 }
