@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   public input: any;
   public elements: number[] = [];
 
-  //charts
+  // charts
   public logChart: any;
   public linChart: any;
   public logLinChart: any;
@@ -186,8 +186,13 @@ export class AppComponent implements OnInit {
 
   resolveWorker(data: any, type: string, chart: any, timeList: number[], testResultsList: TestResults[], input: number) {
     console.log('worker complete for:', type, input, data)
+    // push time data
     timeList.push(data.time);
+
+    // push test result data
     testResultsList.push(data);
+
+    // update chart
     chart.update();
   }
 
