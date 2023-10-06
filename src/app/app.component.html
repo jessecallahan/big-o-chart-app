@@ -1,13 +1,16 @@
-<h1>Big O data</h1>
+<h1>Big O Notation</h1>
 
 <input type="number" [(ngModel)]="input">
 <button type="button" (click)="process(input)">Test Input</button>
 
+<div>
+  <img src="https://miro.medium.com/v2/resize:fit:1400/1*5ZLci3SuR0zM_QlZOADv8Q.jpeg" width="600" height="400">
+</div>
 
 <div class="grid-container">
 
   <div class="grid-item">
-    <h2>Logarithmic chart</h2>
+    <h2>Logarithmic O(log n)</h2>
     <button type="button" (click)="logChart.resetZoom()">Reset Zoom</button>
     <div class="chart-container">
       <canvas id="logChart">{{ logChart }}</canvas>
@@ -25,7 +28,7 @@
   </div>
 
   <div class="grid-item">
-    <h2>Linear chart</h2>
+    <h2>Linear O(n)</h2>
     <button type="button" (click)="linChart.resetZoom()">Reset Zoom</button>
     <div class="chart-container">
       <canvas id="linChart">{{ linChart }}</canvas>
@@ -42,7 +45,40 @@
     </table>
   </div>
 
-  <div class="grid-item"></div>
-  <div class="grid-item"></div>
+  <div class="grid-item">
+    <h2>Log Linear O(n log n)</h2>
+    <button type="button" (click)="logLinChart.resetZoom()">Reset Zoom</button>
+    <div class="chart-container">
+      <canvas id="logLinChart">{{ logLinChart }}</canvas>
+    </div>
+    <table>
+      <th>Value</th>
+      <th>Process Time</th>
+      <th>No. of Operations</th>
+      <tr class="checker" *ngFor="let result of logLinearTestResults">
+        <td>{{result.input}}</td>
+        <td>{{result.time}}</td>
+        <td>{{result.operations}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid-item">
+    <h2>Quadratic O(n^2)</h2>
+    <button type="button" (click)="quadraticChart.resetZoom()">Reset Zoom</button>
+    <div class="chart-container">
+      <canvas id="quadraticChart">{{ quadraticChart }}</canvas>
+    </div>
+    <table>
+      <th>Value</th>
+      <th>Process Time</th>
+      <th>No. of Operations</th>
+      <tr class="checker" *ngFor="let result of quadraticTestResults">
+        <td>{{result.input}}</td>
+        <td>{{result.time}}</td>
+        <td>{{result.operations}}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 

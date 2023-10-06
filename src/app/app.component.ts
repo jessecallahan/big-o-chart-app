@@ -9,10 +9,14 @@ import {TestResults} from "./process-algos.function";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public logChart: any;
-  public linChart: any;
   public input: any;
   public elements: number[] = [];
+
+  //charts
+  public logChart: any;
+  public linChart: any;
+  public logLinChart: any;
+  public quadraticChart: any;
 
 
   // time complexity data
@@ -24,7 +28,8 @@ export class AppComponent implements OnInit {
   // test results data
   public logarithmicTestResults: TestResults[] = [];
   public linearTestResults: TestResults[] = [];
-
+  public logLinearTestResults: TestResults[] = [];
+  public quadraticTestResults: TestResults[] = [];
 
   chartOptions: any = {
     responsive: true,
@@ -97,6 +102,38 @@ export class AppComponent implements OnInit {
       },
       options: this.chartOptions
     });
+
+    this.logLinChart = new Chart("logLinChart", {
+      type: 'line',
+      data: {
+        // values on X-Axis
+        labels: this.elements,
+        datasets: [
+          {
+            label: "Log Linear Time",
+            data: this.logLinearTime,
+            backgroundColor: 'orange'
+          }
+        ]
+      },
+      options: this.chartOptions
+    });
+
+    this.quadraticChart = new Chart("quadraticChart", {
+      type: 'line',
+      data: {
+        // values on X-Axis
+        labels: this.elements,
+        datasets: [
+          {
+            label: "Quadratic Time",
+            data: this.quadraticTime,
+            backgroundColor: 'red'
+          }
+        ]
+      },
+      options: this.chartOptions
+    });
   }
 
   // Process Input
@@ -128,6 +165,22 @@ export class AppComponent implements OnInit {
     linWorker.onmessage = ({ data }) => {
       // update chart
       this.resolveWorker(data, 'Linear', this.linChart, this.linearTime, this.linearTestResults, input);
+    };
+
+    // run Log Linear
+    const logLinearWorker = new Worker(new URL('./app.worker', import.meta.url));
+    logLinearWorker.postMessage({input: input, type: 'Log Linear'});
+    logLinearWorker.onmessage = ({ data }) => {
+      // update chart
+      this.resolveWorker(data, 'Log Linear', this.logLinChart, this.logLinearTime, this.logLinearTestResults, input);
+    };
+
+    // run Quadratic
+    const quadraticWorker = new Worker(new URL('./app.worker', import.meta.url));
+    quadraticWorker.postMessage({input: input, type: 'Quadratic'});
+    quadraticWorker.onmessage = ({ data }) => {
+      // update chart
+      this.resolveWorker(data, 'Quadratic', this.quadraticChart, this.quadraticTime, this.quadraticTestResults, input);
     };
   }
 

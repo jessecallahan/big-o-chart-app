@@ -14,6 +14,13 @@ export function processAlgos(input: any) {
     algo = linear;
   }
 
+  if (input.type === 'Log Linear') {
+    algo = logLinear;
+  }
+
+  if (input.type === 'Quadratic') {
+    algo = quadratic;
+  }
   return prepareTestResults(input.type, algo, input.input);
 }
 
