@@ -93,11 +93,8 @@ export class AppComponent implements OnInit {
 
   // Process Input
   process(input: number) {
-    // add to inputList (todo turn into pure function)
+    // add to inputList
     this.elements.push(input);
-
-    // sort elements
-    //this.elements.sort((a,b) => a - b);
 
     // clear input
     this.input = '';
@@ -106,54 +103,34 @@ export class AppComponent implements OnInit {
     console.log(this.processes);
 
     // process algos
-    this.runAlgo(input)
+    this.runAlgo(input);
+  }
+
+  runAlgo(input: number): void {
+    console.log('start web worker for:', input);
+    const worker = new Worker(new URL('./app.worker', import.meta.url));
+    worker.postMessage(input);
+    worker.onmessage = ({ data }) => {
       // update chart
-      .then((data) => {
-
-        const logarithmic = data[0];
-        const linear = data[1];
-        const logLinear = data[2];
-        const quadratic = data[3];
-
-        console.log('promise complete for:', input, data)
-        this.logarithmicTime.push(logarithmic.time);
-        this.linearTime.push(linear.time);
-        this.logLinearTime.push(logLinear.time);
-        this.quadraticTime.push(quadratic.time);
-        this.processes.push([logarithmic, linear, logLinear, quadratic]);
-        this.chart.update();
-      });
+      this.resolveWorker(data, input);
+    };
   }
 
-  // autoProcess(input: number, stop = false) {
-  //   const interval = setInterval(() => {
-  //     this.process(input);
-  //     input = input * 2;
-  //     console.log('input', input);
-  //   }, 5000);
-  //
-  //   if (stop) {
-  //     clearInterval(interval)
-  //   }
-  // }
+  resolveWorker(data: any, input: number) {
+    const logarithmic = data[0];
+    const linear = data[1];
+    const logLinear = data[2];
+    const quadratic = data[3];
 
-  // Utilities
-  // millisToMinutesAndSeconds(millis: number) {
-  //   const date = new Date(millis);
-  //   return `${date.getMinutes()}:${date.getSeconds()}`
-  // }
+    console.log('worker complete for:', input, data)
+    this.logarithmicTime.push(logarithmic.time);
+    this.linearTime.push(linear.time);
+    this.logLinearTime.push(logLinear.time);
+    this.quadraticTime.push(quadratic.time);
+    this.processes.push([logarithmic, linear, logLinear, quadratic]);
 
-  runAlgo(input: number): Promise<any> {
-    console.log('starting promise for input:', input)
-    return new Promise((resolve) => {
-      const worker = new Worker(new URL('./app.worker', import.meta.url));
-      worker.postMessage(input);
-      worker.onmessage = ({ data }) => {
-        resolve(data);
-      };
-    });
+    this.chart.update();
   }
-
 
 }
 

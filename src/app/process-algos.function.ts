@@ -1,4 +1,9 @@
-
+class TestResults {
+  constructor(public time: number,
+              public type: string,
+              public operations: number,
+              public input: number) {}
+}
 export function processAlgos(input: number) {
   return [
     prepareTestResults('Logarithmic', logo, input),
@@ -11,15 +16,10 @@ export function processAlgos(input: number) {
 function prepareTestResults(type: string, operations: Function, input: number) {
   const t0 = performance.now();
   const op = operations(input);
-  const t1 =  performance.now();;
+  const t1 =  performance.now();
 
-  console.log(type, 't1:', t1, 't0:', t0)
-  return {
-    time: t1 - t0,
-    type: type,
-    operations: op,
-    input: input
-  }
+  console.log(type, 't1:', t1, 't0:', t0);
+  return new TestResults(t1 - t0, type, op, input);
 }
 
 // Algorithms
@@ -50,7 +50,6 @@ const logLinear = function logLinear(n: number, operations = 0) {
     }
   }
   return operations;
-
 }
 
 // Quadratic Time - O(n^2)

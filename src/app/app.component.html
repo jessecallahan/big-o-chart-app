@@ -2,8 +2,6 @@
 
 <input type="number" [(ngModel)]="input">
 <button type="button" (click)="process(input)">Test Input</button>
-<!--<button type="button" (click)="autoProcess(input)">Automatic Test input (doubles input every 5 seconds)</button>-->
-<!--<button type="button" (click)="autoProcess(input, true)">Stop Automatic Test</button>-->
 <button type="button" (click)="chart.resetZoom()">Reset Zoom</button>
 <div class="chart-container">
   <canvas id="MyChart">{{ chart }}</canvas>
