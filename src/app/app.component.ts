@@ -148,6 +148,7 @@ export class AppComponent implements OnInit {
     this.runAlgos(input);
   }
 
+  // Process algos
   runAlgos(input: number): void {
     console.log('start web worker for:', input);
     // run four web workers
@@ -184,6 +185,7 @@ export class AppComponent implements OnInit {
     };
   }
 
+  // Update data
   resolveWorker(data: any, type: string, chart: any, timeList: number[], testResultsList: TestResults[], input: number) {
     console.log('worker complete for:', type, input, data)
     // push time data
