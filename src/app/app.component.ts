@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from "chart.js/auto";
-import {TestResults} from "./process-algos.function";
+import {TestResults} from "./process-algos.service";
 
 
 @Component({

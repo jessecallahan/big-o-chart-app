@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import {processAlgos} from "./process-algos.function";
+import {processAlgos} from "./process-algos.service";
 
 addEventListener('message', ({ data }) => {
   const response = processAlgos(data);
