@@ -80,5 +80,41 @@
       </tr>
     </table>
   </div>
+
+  <div class="grid-item">
+    <h2>Dollars Pre Binary O(2973(n))</h2>
+    <button type="button" (click)="dollarsPreBinaryChart.resetZoom()">Reset Zoom</button>
+    <div class="chart-container">
+      <canvas id="dollarsPreBinaryChart">{{ dollarsPreBinaryChart }}</canvas>
+    </div>
+    <table>
+      <th>Value</th>
+      <th>Process Time</th>
+      <th>No. of Operations</th>
+      <tr class="checker" *ngFor="let result of quadraticTestResults">
+        <td>{{result.input}}</td>
+        <td>{{result.time}}</td>
+        <td>{{result.operations}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid-item">
+    <h2>Dollars Binary Time O(n^2)</h2>
+    <button type="button" (click)="dollarsBinaryChart.resetZoom()">Reset Zoom</button>
+    <div class="chart-container">
+      <canvas id="dollarsBinaryChart">{{ dollarsBinaryChart }}</canvas>
+    </div>
+    <table>
+      <th>Value</th>
+      <th>Process Time</th>
+      <th>No. of Operations</th>
+      <tr class="checker" *ngFor="let result of quadraticTestResults">
+        <td>{{result.input}}</td>
+        <td>{{result.time}}</td>
+        <td>{{result.operations}}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 

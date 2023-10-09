@@ -1,26 +1,15 @@
-// 1) seattle test data
-// object structure (input) -
-// export class AmountDetail {
-//   constructor(
-//     public year: number,
-//     public amountField: AmountField,
-//     public detailLevel: DetailLevel,
-//     public detailValue: number,
-//     public amount: number,
-//     public govtHasMissingFilings = false
-//   ) {	}
-// }
-// 2) recreate reduce function
-// return model (out)
-// Finaces at a glance card
-// constructor(
-//   report: Report,
-//   amount: number,
-//   displayYear: number,
-//   trendAmounts: Array<TrendAmount>,
-//   subCategoryItems: Array<SubCategoryItem>,
-// ) {
-// 3) fix for find()
-//    a) test data is sorted
-//    b) binary function
-// 4) set up test structure for both functions
+// generate by dollars algo (O 2973(n))
+export function generateByDollarsForGovernmentId(sched1: any, localGovs: any) {
+  let operations = 0;
+  //sched1 = [{test: 'test'}];
+    console.log(sched1.length, localGovs);
+  sched1.map((schedule1Aggregation: any) => {
+      const localGov = localGovs.find((gov: any) => {
+        operations++;
+        return gov.mcag === schedule1Aggregation.mcag
+      });
+  });
+  console.log(operations);
+}
+
+

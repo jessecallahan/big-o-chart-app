@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from "chart.js/auto";
 import {TestResults} from "./process-algos.service";
+import {generateByDollarsForGovernmentId} from "./algo-problem.service";
+import {localGovs, sched1TestData} from "./test-data";
 
 
 @Component({
@@ -17,7 +19,8 @@ export class AppComponent implements OnInit {
   public linChart: any;
   public logLinChart: any;
   public quadraticChart: any;
-
+  public dollarsPreBinaryChart: any;
+  public dollarsBinaryChart: any;
 
   // time complexity data
   public logarithmicTime: number[] = [];
@@ -67,6 +70,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.createCharts();
+    generateByDollarsForGovernmentId(sched1TestData, localGovs)
   }
 
   // Chart config
@@ -134,12 +138,47 @@ export class AppComponent implements OnInit {
       },
       options: this.chartOptions
     });
+
+    this.dollarsPreBinaryChart = new Chart("dollarsPreBinaryChart", {
+        type: 'line',
+        data: {
+            // values on X-Axis
+            labels: this.elements,
+            datasets: [
+                {
+                    label: "Dollars Pre Binary Time",
+                    data: [44],
+                    backgroundColor: 'red'
+                }
+            ]
+        },
+        options: this.chartOptions
+    });
+
+    this.dollarsBinaryChart = new Chart("dollarsBinaryChart", {
+        type: 'line',
+        data: {
+            // values on X-Axis
+            labels: this.elements,
+            datasets: [
+                {
+                    label: "Dollars Binary Time",
+                    data: [44],
+                    backgroundColor: 'red'
+                }
+            ]
+        },
+        options: this.chartOptions
+    });
   }
 
   // Process Input
   process(input: number) {
     // add to inputList
     this.elements.push(input);
+
+    // prepareSched1TestData
+      console.log('y', this.prepareSched1TestData(input));
 
     // clear input
     this.input = '';
@@ -196,6 +235,26 @@ export class AppComponent implements OnInit {
 
     // update chart
     chart.update();
+  }
+
+  // todo comment
+  prepareSched1TestData(input: number) {
+      if(input <= 1688) {
+        return sched1TestData.slice(0, input);
+      } else {
+        const amountOfObjectsToCreate = input - 1688;
+        let additionalArray: any[] = [];
+          for(let i = 0; i < amountOfObjectsToCreate; i++) {
+            additionalArray.push({
+              "mcag": "00",
+              "year": 2021,
+              "fsSectionId": 20,
+              "totalAmount": 1000,
+
+            })
+          }
+        return [...additionalArray, ...sched1TestData ];
+      }
   }
 
 }
