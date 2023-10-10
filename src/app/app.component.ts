@@ -257,6 +257,9 @@ export class AppComponent implements OnInit {
 
     // update chart
     chart.update();
+
+    // reset zoom
+    chart.resetZoom();
   }
 
   // Prepares schedule 1 test data

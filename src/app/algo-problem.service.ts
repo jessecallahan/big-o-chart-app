@@ -33,7 +33,7 @@ function generateByDollarsForGovernmentId(sched1: any) {
   return operations;
 }
 
-// generate by dollars algo - with binary search
+// generate by dollars algo with binary search (O 12(n))
 function generateByDollarsForGovernmentIdBinary(sched1: any) {
   let operations = 0;
   sched1.map((schedule1Aggregation: any) => {
