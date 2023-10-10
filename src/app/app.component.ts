@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
                 {
                     label: "Dollars Pre Binary Time",
                     data: this.dollarsPreBinaryTime,
-                    backgroundColor: 'red'
+                    backgroundColor: 'purple'
                 }
             ]
         },
@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
                 {
                     label: "Dollars Binary Time",
                     data: this.dollarsBinaryTime,
-                    backgroundColor: 'red'
+                    backgroundColor: 'blue'
                 }
             ]
         },
