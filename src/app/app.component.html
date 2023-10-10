@@ -80,7 +80,9 @@
       </tr>
     </table>
   </div>
+</div>
 
+<div class="grid-container">
   <div class="grid-item">
     <h2>Dollars Pre Binary O(2973(n))</h2>
     <button type="button" (click)="dollarsPreBinaryChart.resetZoom()">Reset Zoom</button>
@@ -91,7 +93,7 @@
       <th>Value</th>
       <th>Process Time</th>
       <th>No. of Operations</th>
-      <tr class="checker" *ngFor="let result of quadraticTestResults">
+      <tr class="checker" *ngFor="let result of dollarsPreBinaryTestResults">
         <td>{{result.input}}</td>
         <td>{{result.time}}</td>
         <td>{{result.operations}}</td>

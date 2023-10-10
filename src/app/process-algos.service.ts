@@ -1,3 +1,4 @@
+
 export class TestResults {
   constructor(public time: number,
               public type: string,
@@ -21,6 +22,7 @@ export function processAlgos(input: any) {
   if (input.type === 'Quadratic') {
     algo = quadratic;
   }
+
   return prepareTestResults(input.type, algo, input.input);
 }
 

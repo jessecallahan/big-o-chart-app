@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from "chart.js/auto";
 import {TestResults} from "./process-algos.service";
-import {generateByDollarsForGovernmentId} from "./algo-problem.service";
+// import {generateByDollarsForGovernmentId} from "./algo-problem.service";
 import {localGovs, sched1TestData} from "./test-data";
 
 
@@ -27,12 +27,14 @@ export class AppComponent implements OnInit {
   public linearTime: number[] = [];
   public logLinearTime: number[]  = [];
   public quadraticTime: number[] = [];
+  public dollarsPreBinaryTime: number[] = [];
 
   // test results data
   public logarithmicTestResults: TestResults[] = [];
   public linearTestResults: TestResults[] = [];
   public logLinearTestResults: TestResults[] = [];
   public quadraticTestResults: TestResults[] = [];
+  public dollarsPreBinaryTestResults: TestResults[] = [];
 
   chartOptions: any = {
     responsive: true,
@@ -70,7 +72,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.createCharts();
-    generateByDollarsForGovernmentId(sched1TestData, localGovs)
   }
 
   // Chart config
@@ -147,7 +148,7 @@ export class AppComponent implements OnInit {
             datasets: [
                 {
                     label: "Dollars Pre Binary Time",
-                    data: [44],
+                    data: this.dollarsPreBinaryTime,
                     backgroundColor: 'red'
                 }
             ]
@@ -178,13 +179,16 @@ export class AppComponent implements OnInit {
     this.elements.push(input);
 
     // prepareSched1TestData
-      console.log('y', this.prepareSched1TestData(input));
+    console.log('y', this.prepareSched1TestData(input));
 
     // clear input
     this.input = '';
 
     // process algos
     this.runAlgos(input);
+
+    // process 'in the wild' case
+    this.runProblem(this.prepareSched1TestData(input));
   }
 
   // Process algos
@@ -224,6 +228,18 @@ export class AppComponent implements OnInit {
     };
   }
 
+  // Process Pre Binary and Binary test case
+  runProblem(input: any): void {
+    console.log('input', input);
+    // run Quadratic
+    const preBinaryWorker = new Worker(new URL('./app.worker', import.meta.url));
+    preBinaryWorker.postMessage({input: input, type: 'Problem', subType: 'Pre Binary'});
+    preBinaryWorker.onmessage = ({ data }) => {
+      // update chart
+      this.resolveWorker(data, 'Pre Binary', this.dollarsPreBinaryChart, this.dollarsPreBinaryTime, this.dollarsPreBinaryTestResults, input);
+    };
+  }
+
   // Update data
   resolveWorker(data: any, type: string, chart: any, timeList: number[], testResultsList: TestResults[], input: number) {
     console.log('worker complete for:', type, input, data)
@@ -244,14 +260,15 @@ export class AppComponent implements OnInit {
       } else {
         const amountOfObjectsToCreate = input - 1688;
         let additionalArray: any[] = [];
+        let indexCount = 0;
           for(let i = 0; i < amountOfObjectsToCreate; i++) {
-            additionalArray.push({
-              "mcag": "00",
-              "year": 2021,
-              "fsSectionId": 20,
-              "totalAmount": 1000,
-
-            })
+            if (indexCount === 1688) {
+              indexCount = 0;
+              additionalArray.push(sched1TestData[indexCount]);
+            } else {
+              additionalArray.push(sched1TestData[indexCount]);
+            }
+            indexCount++;
           }
         return [...additionalArray, ...sched1TestData ];
       }
