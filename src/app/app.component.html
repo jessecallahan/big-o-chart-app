@@ -7,8 +7,8 @@
   <img src="https://miro.medium.com/v2/resize:fit:1400/1*5ZLci3SuR0zM_QlZOADv8Q.jpeg" width="600" height="400">
 </div>
 
+<h2><u>Test Cases</u></h2>
 <div class="grid-container">
-
   <div class="grid-item">
     <h2>Logarithmic O(log n)</h2>
     <button type="button" (click)="logChart.resetZoom()">Reset Zoom</button>
@@ -82,6 +82,7 @@
   </div>
 </div>
 
+<h2><u>"In the Wild" Case</u></h2>
 <div class="grid-container">
   <div class="grid-item">
     <h2>Dollars Pre Binary O(2973(n))</h2>
@@ -102,7 +103,7 @@
   </div>
 
   <div class="grid-item">
-    <h2>Dollars Binary Time O(n^2)</h2>
+    <h2>Dollars Binary O(11(n))</h2>
     <button type="button" (click)="dollarsBinaryChart.resetZoom()">Reset Zoom</button>
     <div class="chart-container">
       <canvas id="dollarsBinaryChart">{{ dollarsBinaryChart }}</canvas>
@@ -111,7 +112,7 @@
       <th>Value</th>
       <th>Process Time</th>
       <th>No. of Operations</th>
-      <tr class="checker" *ngFor="let result of quadraticTestResults">
+      <tr class="checker" *ngFor="let result of dollarsBinaryTestResults">
         <td>{{result.input}}</td>
         <td>{{result.time}}</td>
         <td>{{result.operations}}</td>

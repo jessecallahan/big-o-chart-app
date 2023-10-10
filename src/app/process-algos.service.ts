@@ -74,3 +74,7 @@ const quadratic = function quadratic(n: number, operations = 0) {
   }
   return operations;
 }
+
+
+
+

@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from "chart.js/auto";
 import {TestResults} from "./process-algos.service";
-// import {generateByDollarsForGovernmentId} from "./algo-problem.service";
 import {localGovs, sched1TestData} from "./test-data";
-
 
 @Component({
   selector: 'app-root',
@@ -28,6 +26,7 @@ export class AppComponent implements OnInit {
   public logLinearTime: number[]  = [];
   public quadraticTime: number[] = [];
   public dollarsPreBinaryTime: number[] = [];
+  public dollarsBinaryTime: number[] = [];
 
   // test results data
   public logarithmicTestResults: TestResults[] = [];
@@ -35,6 +34,7 @@ export class AppComponent implements OnInit {
   public logLinearTestResults: TestResults[] = [];
   public quadraticTestResults: TestResults[] = [];
   public dollarsPreBinaryTestResults: TestResults[] = [];
+  public dollarsBinaryTestResults: TestResults[] = [];
 
   chartOptions: any = {
     responsive: true,
@@ -58,7 +58,6 @@ export class AppComponent implements OnInit {
           wheel: {
             enabled: true,
           },
-
           mode: 'xy',
         },
         pan: {
@@ -164,7 +163,7 @@ export class AppComponent implements OnInit {
             datasets: [
                 {
                     label: "Dollars Binary Time",
-                    data: [44],
+                    data: this.dollarsBinaryTime,
                     backgroundColor: 'red'
                 }
             ]
@@ -179,7 +178,7 @@ export class AppComponent implements OnInit {
     this.elements.push(input);
 
     // prepareSched1TestData
-    console.log('y', this.prepareSched1TestData(input));
+    console.log('in the wild test data', this.prepareSched1TestData(input));
 
     // clear input
     this.input = '';
@@ -230,13 +229,20 @@ export class AppComponent implements OnInit {
 
   // Process Pre Binary and Binary test case
   runProblem(input: any): void {
-    console.log('input', input);
-    // run Quadratic
+    // run pre binary
     const preBinaryWorker = new Worker(new URL('./app.worker', import.meta.url));
     preBinaryWorker.postMessage({input: input, type: 'Problem', subType: 'Pre Binary'});
     preBinaryWorker.onmessage = ({ data }) => {
       // update chart
-      this.resolveWorker(data, 'Pre Binary', this.dollarsPreBinaryChart, this.dollarsPreBinaryTime, this.dollarsPreBinaryTestResults, input);
+      this.resolveWorker(data, 'Pre Binary', this.dollarsPreBinaryChart, this.dollarsPreBinaryTime, this.dollarsPreBinaryTestResults, input.length);
+    };
+
+    // run binary
+    const binaryWorker = new Worker(new URL('./app.worker', import.meta.url));
+    binaryWorker.postMessage({input: input, type: 'Problem', subType: 'Binary'});
+    binaryWorker.onmessage = ({ data }) => {
+      // update chart
+      this.resolveWorker(data, 'Binary', this.dollarsBinaryChart, this.dollarsBinaryTime, this.dollarsBinaryTestResults, input.length);
     };
   }
 
@@ -253,7 +259,9 @@ export class AppComponent implements OnInit {
     chart.update();
   }
 
-  // todo comment
+  // Prepares schedule 1 test data
+  // if input is 1688 or less, slice existing array to match input length
+  // if input is above 1688, add duplicate arrays up to input length
   prepareSched1TestData(input: number) {
       if(input <= 1688) {
         return sched1TestData.slice(0, input);

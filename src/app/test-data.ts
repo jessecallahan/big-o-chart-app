@@ -1,3 +1,4 @@
+// sched 1 test data (2973 items)
 export const sched1TestData = [
   {
     "id": 0,
@@ -27009,7 +27010,7 @@ export const sched1TestData = [
   }
 ]
 
-
+// local govs test data (2688 items)
 const localGovsUnsorted = [
   {
     "mcag": "3180",
@@ -95391,4 +95392,6 @@ const localGovsUnsorted = [
     "sortableFullNameForSearching": "Zillah Transportation Benefit District"
   }
 ]
-export const localGovs = localGovsUnsorted.sort((a: any,b: any) => a.mcag - b.mcag);
+export const localGovs = localGovsUnsorted.sort((a, b) => a.mcag.localeCompare(b.mcag, undefined, { numeric: true }))
+
+
