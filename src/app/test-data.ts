@@ -27010,7 +27010,7 @@ export const sched1TestData = [
   }
 ]
 
-// local govs test data (2688 items)
+// local govs test data (1688 items)
 const localGovsUnsorted = [
   {
     "mcag": "3180",
