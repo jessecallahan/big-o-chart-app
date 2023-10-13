@@ -15,11 +15,11 @@ Angular, chart.js, chart.js plugin zoom, webworkers
 
 ## References 
 
-https://www.youtube.com/watch?v=Mo4vesaut8g
-https://towardsdatascience.com/logarithms-exponents-in-complexity-analysis-b8071979e847
-https://adrianmejia.com/how-to-find-time-complexity-of-an-algorithm-code-big-o-notation/
+https://www.youtube.com/watch?v=Mo4vesaut8g \
+https://towardsdatascience.com/logarithms-exponents-in-complexity-analysis-b8071979e847 \
+https://adrianmejia.com/how-to-find-time-complexity-of-an-algorithm-code-big-o-notation/ \
 
 ## Author
 
-Jesse Callahan, Fellow, Web Application Developer
-github.com/jessecallahan
+Jesse Callahan, Fellow, Web Application Developer \
+https://www.github.com/jessecallahan
